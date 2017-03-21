@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const router = require('./config/routes')
+const router = require('./router')
 const cors = require('cors')
 const dotenv = require('dotenv')
 const app = express()
@@ -29,3 +29,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`)
 })
+
+module.exports = app
