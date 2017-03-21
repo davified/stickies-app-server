@@ -4,7 +4,9 @@
   "description": "The server for stickies - a real time application for creating and posting stickies",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start"
+
   },
   "author": "David Tan (davidtan@thoughtworks.com)",
   "license": "ISC",
