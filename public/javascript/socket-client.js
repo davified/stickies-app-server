@@ -1,6 +1,5 @@
 /* globals io */
-// let socket = io.connect('http://localhost:3000/')
-var socket = io()
+var socket = io.connect('https://stickies-app-server.herokuapp.com/')
 var channelName
 
 // 1. socket.io event #1 - connection
