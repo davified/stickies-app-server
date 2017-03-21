@@ -42,14 +42,19 @@ io.on('connection', function (socket) {
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
     roomName = data.channelName
-    socket.join('room-' + roomName)
+    socket.join(roomName)
 
     // Send this event to everyone in the room.
-    io.sockets.in('room-' + roomName).emit('connectToRoom', 'You are in room-' + roomName)
+    io.sockets.in(roomName).emit('connectToRoom', 'You are in room-' + roomName)
     console.log(io.nsps['/'].adapter.rooms)
   })
 
   // 3. socket.io event #3 - sending messages in the room
+  socket.on('sendMessage', function (data) {
+    message = data.message
+    room = data.room
+    io.to(room).emit('broadcastMessageToRoom', message)
+  })
 
   // 4. socket.io event #4 - loading messages and display state for ppl joining the room midway
 })
