@@ -41,9 +41,8 @@ io.on('connection', function (socket) {
     let roomName = data.channelName
     socket.join(roomName)
 
-    // Send this event to everyone in the room.
     io.sockets.in(roomName).emit('connectToRoom', 'You are in room-' + roomName)
-    console.log(io.nsps['/'].adapter.rooms)
+    // console.log(io.nsps['/'].adapter.rooms)
   })
 
   // 3. socket.io event #3 - sending messages in the room
