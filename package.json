@@ -20,5 +20,8 @@
     "morgan": "^1.8.1",
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3"
+  },
+  "devDependencies": {
+    "should": "^11.2.1"
   }
 }

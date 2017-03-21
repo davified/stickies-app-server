@@ -5,7 +5,8 @@ let roomName
 
 // 1. socket.io event #1 - connection
 socket.on('connectionSuccess', function (data) {
-  console.log(data)
+  confirmationMessage = `Connection success. Welcome user number ${data.totalUsers}`
+  console.log(confirmationMessage)
 })
 
 // 2. socket.io event #2 - creating rooms

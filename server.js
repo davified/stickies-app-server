@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
 io.on('connection', function (socket) {
   console.log(`New user connected. Total connections: ${numberOfConnections}`)
   numberOfConnections++
-  socket.emit('connectionSuccess', { message: `Connection success. Welcome user number ${numberOfConnections}` })
+  socket.emit('connectionSuccess', { totalUsers: numberOfConnections })
 
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
