@@ -4,6 +4,7 @@ const dotenv = require('dotenv')
 const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000
+let history = {}
 
 dotenv.load()
 
@@ -38,21 +39,32 @@ io.on('connection', function (socket) {
 
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
-    let roomName = data.channelName
-    socket.join(roomName)
+    let room = data.roomName
+    socket.join(room)
 
-    io.sockets.in(roomName).emit('connectToRoom', 'You are in room-' + roomName)
+    io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
+    history[room] = [] // initialising empty array for storing stickies/messages
     // console.log(io.nsps['/'].adapter.rooms)
   })
 
-  // 3. socket.io event #3 - sending messages in the room
+  // 3. socket.io event #3 - joining a room
+  socket.on('joinRoom', function (data) {
+    let room = data.roomName
+    socket.join(room)
+
+    io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
+    socket.emit('loadMessageHistory', {history: history[room]})
+  })
+
+  // 4. socket.io event #4 - sending messages in the room
   socket.on('sendMessage', function (data) {
     let message = data.message
     let room = data.room
     io.to(room).emit('broadcastMessageToRoom', message)
+    history[room].push(message)
   })
 
-  // 4. socket.io event #4 - loading messages and display state for ppl joining the room midway
+  // 5. socket.io event #5 - loading messages and display state for ppl joining the room midway
 })
 
 server.listen(PORT, function () {
