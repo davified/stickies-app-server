@@ -4,13 +4,19 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<script src="/javascript/socket.io.min.js"></script>
-	<script src="./javascript/socket-client.js" charset="utf-8"></script>
 	<title>Socket client</title>
 </head>
 <body>
+	<h1>Test socket client</h1>
+	<h3 id="roomName"></h3>
+	Channel namespace: <input type="text" id="channelName">
+	<button id="createChannel">Create channel</button>
 
+	<ul id="socketMessages">
+
+	</ul>
+
+	<script src="/javascript/socket.io.min.js"></script>
+	<script src="./javascript/socket-client.js" charset="utf-8"></script>
 </body>
 </html>
-
-<h1>Test socket client</h1>
