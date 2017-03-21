@@ -1,7 +1,7 @@
 /* globals io */
 let URL = window.location.href
 let socket = io.connect(URL)
-let channelName
+let roomName
 
 // 1. socket.io event #1 - connection
 socket.on('connectionSuccess', function (data) {
@@ -10,7 +10,7 @@ socket.on('connectionSuccess', function (data) {
 
 // 2. socket.io event #2 - creating rooms
 document.getElementById('createRoom').addEventListener('click', function () {
-  roomName = document.getElementById('createRoomName').value
+  let roomName = document.getElementById('createRoomName').value
   document.getElementById('createRoomName').value = ''
 
   socket.emit('createRoom', {roomName: roomName})
@@ -22,7 +22,7 @@ socket.on('connectToRoom', function (data) {
 
 // 3. socket.io event #3 - joining a room
 document.getElementById('joinRoom').addEventListener('click', function () {
-  roomName = document.getElementById('joinRoomName').value
+  let roomName = document.getElementById('joinRoomName').value
   document.getElementById('joinRoomName').value = ''
 
   socket.emit('joinRoom', {roomName: roomName})
@@ -30,7 +30,7 @@ document.getElementById('joinRoom').addEventListener('click', function () {
 
 socket.on('loadMessageHistory', function (data) {
   console.log(data.history)
-  messages = data.history || []
+  let messages = data.history || []
   messages.forEach(function (element) {
     let node = document.createElement('LI')
     let textnode = document.createTextNode(element)
