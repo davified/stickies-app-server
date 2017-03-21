@@ -13,6 +13,7 @@ app.use(require('morgan')('dev'))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
 // wiring up the router
 app.use('/', router)
@@ -26,7 +27,23 @@ app.use((err, req, res, next) => {
   })
 })
 
-app.listen(PORT, function () {
+
+// SOCKET IO
+var server = require('http').Server(app)
+var io = require('socket.io')(server)
+
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/index.html')
+})
+
+io.on('connection', function (socket) {
+	socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+})
+
+server.listen(PORT, function () {
   console.log(`listening on port ${PORT}`)
 })
 
