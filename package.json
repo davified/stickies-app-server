@@ -1,0 +1,19 @@
+{
+  "name": "stickies-app-server",
+  "version": "1.0.0",
+  "description": "The server for stickies - a real time application for creating and posting stickies",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Tan (davidtan@thoughtworks.com)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
+    "express": "^4.15.2",
+    "mocha": "^3.2.0",
+    "morgan": "^1.8.1",
+    "socket.io": "^1.7.3"
+  }
+}
