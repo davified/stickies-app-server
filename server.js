@@ -23,8 +23,8 @@ app.use((err, req, res, next) => {
 
 // SOCKET IO
 var server = require('http').Server(app)
-// var io = require('socket.io')(server)
-var io = require('socket.io').listen(5000)
+var io = require('socket.io')(server)
+// var io = require('socket.io').listen(5000)
 var numberOfConnections = 0
 var history = {}
 

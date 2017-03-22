@@ -1,6 +1,6 @@
 /* globals io */
-// let URL = window.location.href
-let socket = io.connect('http://localhost:3000')
+let URL = window.location.href
+let socket = io.connect(URL)
 var roomName
 
 // 1. socket.io event #1 - connection
