@@ -30,7 +30,6 @@ document.getElementById('joinRoom').addEventListener('click', function () {
 })
 
 socket.on('loadMessageHistory', function (data) {
-  console.log(data.history)
   let messages = data.history || []
   messages.forEach(function (element) {
     let node = document.createElement('LI')

@@ -43,17 +43,18 @@ io.on('connection', function (socket) {
     socket.join(room)
 
     io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
-    history.room = [] // initialising empty array for storing stickies/messages
+    history[room] = [] // initialising empty array for storing stickies/messages
     // console.log(io.nsps['/'].adapter.rooms)
   })
 
   // 3. socket.io event #3 - joining a room
   socket.on('joinRoom', function (data) {
+    console.log(history)
     let room = data.roomName
     socket.join(room)
 
     io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
-    socket.emit('loadMessageHistory', {history: history.room})
+    socket.emit('loadMessageHistory', {history: history[room]})
   })
 
   // 4. socket.io event #4 - sending messages in the room
@@ -62,7 +63,7 @@ io.on('connection', function (socket) {
     let message = data.message
     let room = data.room
     io.to(room).emit('broadcastMessageToRoom', message)
-    history.room.push(message)
+    history[room].push(message)
   })
 
   // 5. socket.io event #5 - loading messages and display state for ppl joining the room midway
