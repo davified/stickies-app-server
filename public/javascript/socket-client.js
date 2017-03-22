@@ -1,17 +1,17 @@
 /* globals io */
 let URL = window.location.href
 let socket = io.connect(URL)
-let roomName
+var roomName
 
 // 1. socket.io event #1 - connection
 socket.on('connectionSuccess', function (data) {
-  confirmationMessage = `Connection success. Welcome user number ${data.totalUsers}`
+  let confirmationMessage = `Connection success. Welcome user number ${data.totalUsers}`
   console.log(confirmationMessage)
 })
 
 // 2. socket.io event #2 - creating rooms
 document.getElementById('createRoom').addEventListener('click', function () {
-  let roomName = document.getElementById('createRoomName').value
+  roomName = document.getElementById('createRoomName').value
   document.getElementById('createRoomName').value = ''
 
   socket.emit('createRoom', {roomName: roomName})
@@ -23,7 +23,7 @@ socket.on('connectToRoom', function (data) {
 
 // 3. socket.io event #3 - joining a room
 document.getElementById('joinRoom').addEventListener('click', function () {
-  let roomName = document.getElementById('joinRoomName').value
+  roomName = document.getElementById('joinRoomName').value
   document.getElementById('joinRoomName').value = ''
 
   socket.emit('joinRoom', {roomName: roomName})
