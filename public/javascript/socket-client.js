@@ -44,7 +44,7 @@ document.getElementById('sendMessage').addEventListener('click', function () {
   let message = document.getElementById('message').value
   document.getElementById('message').value = ''
 
-  socket.emit('sendMessage', {room: roomName, message: message})
+  socket.emit('sendMessage', {roomName: roomName, message: message})
 })
 
 socket.on('broadcastMessageToRoom', function (data) {

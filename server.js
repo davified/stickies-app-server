@@ -23,7 +23,8 @@ app.use((err, req, res, next) => {
 
 // SOCKET IO
 var server = require('http').Server(app)
-var io = require('socket.io')(server)
+// var io = require('socket.io')(server)
+var io = require('socket.io').listen(5000)
 var numberOfConnections = 0
 var history = {}
 
@@ -59,9 +60,8 @@ io.on('connection', function (socket) {
 
   // 4. socket.io event #4 - sending messages in the room
   socket.on('sendMessage', function (data) {
-    console.log(data)
     let message = data.message
-    let room = data.room
+    let room = data.roomName
     io.to(room).emit('broadcastMessageToRoom', message)
     history[room].push(message)
   })
