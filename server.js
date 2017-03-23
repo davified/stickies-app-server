@@ -20,7 +20,7 @@ dotenv.load()
 // Mounting middleware
 app.use(require('morgan')('dev'))
 app.use(cors())
-app.use(express.static('public'))
+app.use(express.static('public/dist'))
 
 // error handling
 app.use((err, req, res, next) => {
@@ -38,11 +38,11 @@ var io = require('socket.io')(server)
 var numberOfConnections = 0
 var history = {}
 
-app.get('/', function (req, res) {
-  res.sendfile(path.join(__dirname, '/index.html'))
+app.get('*', function (req, res) {
+  res.sendfile(path.join(__dirname, '/public/dist/index.html'))
 })
 
-app.get('/demo/*', function(req, res) {
+app.get('/demo', function(req, res) {
   res.sendfile(path.join(__dirname, '/public/dist/index.html'))
 })
 
