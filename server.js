@@ -4,6 +4,16 @@ const dotenv = require('dotenv')
 const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000
+var firebase = require('firebase');
+
+var firebaseConfig = {
+    apiKey: "AIzaSyDaABIq5gX7kp-1TyrSfDrjeObDEDFgFvg",
+    authDomain: "stickieapp-478e0.firebaseapp.com",
+    databaseURL: "https://stickieapp-478e0.firebaseio.com",
+    storageBucket: "stickieapp-478e0.appspot.com",
+    messagingSenderId: "302909387352"
+  };
+var firebaseApp = firebase.initializeApp(firebaseConfig);
 
 dotenv.load()
 
@@ -32,6 +42,10 @@ app.get('/', function (req, res) {
   res.sendfile(path.join(__dirname, '/index.html'))
 })
 
+app.get('/demo/*', function(req, res) {
+  res.sendfile(path.join(__dirname, '/public/dist/index.html'))
+})
+
 // 1. socket.io event #1 - connection
 io.on('connection', function (socket) {
   numberOfConnections++
@@ -40,6 +54,11 @@ io.on('connection', function (socket) {
 
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
+
+    console.log('data in createRoom: '+data);
+
+    firebaseApp.database().ref('board/'+data.payload.uuid).set(data.payload);
+
     let room = data.roomName
     socket.join(room)
 
@@ -52,7 +71,17 @@ io.on('connection', function (socket) {
   socket.on('joinRoom', function (data) {
     console.log(history)
     let room = data.roomName
+
     socket.join(room)
+
+
+    firebaseApp.database().ref('board/' + room).on('value', function(boardData){
+      io.sockets.in(room).emit('sendMessage', {
+                                  type: 'CREATE_BOARD',
+                                  payload: boardData
+                                })
+    })
+
 
     io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
     socket.emit('loadMessageHistory', {history: history[room]})
