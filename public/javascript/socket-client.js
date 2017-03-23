@@ -1,6 +1,12 @@
 /* globals io */
 let URL = window.location.href
-let socket = io.connect(URL)
+var socket
+if (URL.match('heroku') !== null) {
+  socket = io.connect('http://stickies-app-server.herokuapp.com')
+} else {
+  socket = io.connect('http://localhost')
+}
+
 var roomName
 
 // 1. socket.io event #1 - connection
