@@ -4,7 +4,7 @@ var socket
 if (URL.match('heroku') !== null) {
   socket = io.connect('http://stickies-app-server.herokuapp.com')
 } else {
-  socket = io.connect('http://localhost')
+  socket = io.connect('http://stickies.pebkgpzt2n.ap-southeast-1.elasticbeanstalk.com')
 }
 
 var roomName
