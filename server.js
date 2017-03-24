@@ -52,7 +52,7 @@ io.on('connection', function (socket) {
   socket.on('createRoom', function (data) {
     firebaseApp.database().ref('board/'+data.payload.uuid).set(data.payload);
 
-    let room = data.payload.uuid
+    let room = data.payload.uuid 
     socket.join(room)
     
     history[room] = [] 
