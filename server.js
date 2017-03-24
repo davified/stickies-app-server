@@ -65,7 +65,7 @@ io.on('connection', function (socket) {
     socket.join(room)
 
     firebaseApp.database().ref('board/' + room).on('value', function (boardData) {
-      io.sockets.in(room).emit('sendMessage', {
+      io.sockets.in(room).emit('recreateBoard', {
         type: 'CREATE_BOARD',
         payload: boardData
       })
@@ -76,11 +76,22 @@ io.on('connection', function (socket) {
 
   // 4. socket.io event #4 - sending messages in the room
   socket.on('sendMessage', function (data) {
-    console.log('sendMessage data', data)
+    // console.log('sendMessage data', data)
     let room = data.payload.boardId
+
+    // console.log(history[room])
+
     io.sockets.in(room).emit('broadcastMessageToRoom', data)
-    console.log('history', history)
-    history[room].push(data)
+    
+    // if (history[room].find(function(el) { 
+    //   console.log(el.payload.stickieId) 
+    //   console.log(data.payload.stickieId)
+    //   return el.payload.stickieId !== data.payload.stickieId
+    // })) {
+      
+    //   history[room].push(data)  
+    // }
+    
   })
 
   // 5. socket.io event #5 - loading messages and display state for ppl joining the room midway
