@@ -5,17 +5,16 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 8080
 var firebase = require('firebase')
+dotenv.load()
 
 var firebaseConfig = {
-  apiKey: 'AIzaSyDaABIq5gX7kp-1TyrSfDrjeObDEDFgFvg',
+  apiKey: process.env.FIREBASE_APIKEY,
   authDomain: 'stickieapp-478e0.firebaseapp.com',
   databaseURL: 'https://stickieapp-478e0.firebaseio.com',
   storageBucket: 'stickieapp-478e0.appspot.com',
   messagingSenderId: '302909387352'
 }
 var firebaseApp = firebase.initializeApp(firebaseConfig)
-
-dotenv.load()
 
 // Mounting middleware
 app.use(require('morgan')('dev'))
@@ -98,7 +97,7 @@ io.on('connection', function (socket) {
 })
 
 server.listen(PORT, function () {
-  console.log(`listening on port ${PORT}`) 
+  console.log(`listening on port ${PORT}`)
 })
 
 module.exports = app
