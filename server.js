@@ -4,7 +4,7 @@ const dotenv = require('dotenv')
 const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 8080
-var firebase = require('firebase');
+var firebase = require('firebase')
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDaABIq5gX7kp-1TyrSfDrjeObDEDFgFvg',
@@ -50,27 +50,25 @@ io.on('connection', function (socket) {
 
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
-    firebaseApp.database().ref('board/'+data.payload.uuid).set(data.payload);
+    firebaseApp.database().ref('board/' + data.payload.uuid).set(data.payload)
 
-    let room = data.payload.uuid 
+    let room = data.payload.uuid
     socket.join(room)
-    
-    history[room] = [] 
+
+    history[room] = []
   })
 
   // 3. socket.io event #3 - joining a room
   socket.on('joinRoom', function (data) {
-    
     let room = data.roomName
     console.log('room', room)
     socket.join(room)
 
-    firebaseApp.database().ref('board/' + room).on('value', function(boardData){
-        io.sockets.in(room).emit('sendMessage', {
-                                  type: 'CREATE_BOARD',
-                                  payload: boardData
-                                })  
-      
+    firebaseApp.database().ref('board/' + room).on('value', function (boardData) {
+      io.sockets.in(room).emit('sendMessage', {
+        type: 'CREATE_BOARD',
+        payload: boardData
+      })
     })
 
     socket.emit('connectToRoom', history[room])
