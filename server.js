@@ -87,7 +87,7 @@ io.on('connection', function (socket) {
 })
 
 server.listen(PORT, function () {
-  console.log(`listening on port ${PORT}`)
+  console.log(`listening on port ${PORT}`) 
 })
 
 module.exports = app
