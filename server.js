@@ -86,10 +86,10 @@ io.on('connection', function (socket) {
 
   // 4. socket.io event #4 - sending messages in the room
   socket.on('sendMessage', function (data) {
-    let message = data.message
-    let room = data.roomName
-    io.to(room).emit('broadcastMessageToRoom', message)
-    history[room].push(message)
+    // let message = data.message
+    // let room = data.roomName
+    io.to(room).emit('broadcastMessageToRoom', data)
+    history[room].push(data)
   })
 
   // 5. socket.io event #5 - loading messages and display state for ppl joining the room midway
