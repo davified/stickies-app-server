@@ -3,8 +3,8 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const path = require('path')
 const app = express()
-const PORT = process.env.PORT || 3000
-var firebase = require('firebase')
+const PORT = process.env.PORT || 8080
+var firebase = require('firebase');
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDaABIq5gX7kp-1TyrSfDrjeObDEDFgFvg',
@@ -42,10 +42,6 @@ app.get('*', function (req, res) {
   res.sendfile(path.join(__dirname, '/public/dist/index.html'))
 })
 
-app.get('/demo', function (req, res) {
-  res.sendfile(path.join(__dirname, '/public/dist/index.html'))
-})
-
 // 1. socket.io event #1 - connection
 io.on('connection', function (socket) {
   numberOfConnections++
@@ -54,41 +50,38 @@ io.on('connection', function (socket) {
 
   // 2. socket.io event #2 - creating rooms
   socket.on('createRoom', function (data) {
-    console.log('data in createRoom: ' + data)
+    firebaseApp.database().ref('board/'+data.payload.uuid).set(data.payload);
 
-    firebaseApp.database().ref('board/' + data.payload.uuid).set(data.payload)
-
-    let room = data.roomName
+    let room = data.payload.uuid
     socket.join(room)
-
-    io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
-    history[room] = [] // initialising empty array for storing stickies/messages
-    // console.log(io.nsps['/'].adapter.rooms)
+    
+    history[room] = [] 
   })
 
   // 3. socket.io event #3 - joining a room
   socket.on('joinRoom', function (data) {
-    console.log(history)
+    
     let room = data.roomName
-
+    console.log('room', room)
     socket.join(room)
 
-    firebaseApp.database().ref('board/' + room).on('value', function (boardData) {
-      io.sockets.in(room).emit('sendMessage', {
-        type: 'CREATE_BOARD',
-        payload: boardData
-      })
+    firebaseApp.database().ref('board/' + room).on('value', function(boardData){
+        io.sockets.in(room).emit('sendMessage', {
+                                  type: 'CREATE_BOARD',
+                                  payload: boardData
+                                })  
+      
     })
 
-    io.sockets.in(room).emit('connectToRoom', 'You are in room-' + room)
-    socket.emit('loadMessageHistory', {history: history[room]})
+    socket.emit('connectToRoom', history[room])
   })
 
   // 4. socket.io event #4 - sending messages in the room
   socket.on('sendMessage', function (data) {
-    // let message = data.message
-    // let room = data.roomName
-    io.to(room).emit('broadcastMessageToRoom', data)
+    console.log('sendMessage data', data)
+    let room = data.payload.boardId
+    io.sockets.in(room).emit('broadcastMessageToRoom', data)
+    console.log('history', history)
     history[room].push(data)
   })
 
